@@ -11,10 +11,9 @@ boss install github.com/juliosenha/mail4delphi
 ```
 
 ## Manual Installation
-If you choose to install manually, simply add the following folders to your project, in *Project > Options > Resource Compiler > Directories and Conditionals > Include file search path*
+If you choose to install manually, simply add the following folder to your project, in *Project > Options > Resource Compiler > Directories and Conditionals > Include file search path*
 ```
 ../mail4delphi/src
-../mail4delphi/src/providers
 
 ```
 
