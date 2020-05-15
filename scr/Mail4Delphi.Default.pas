@@ -31,7 +31,7 @@ type
     function AddReplyTo(const AMail: string; const AName: string = ''): IMail;
     function AddCC(const AMail: string; const AName: string = ''): IMail;
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
-    function SetBody(const ABody: string): IMail;
+    function AddBody(const ABody: string): IMail;
     function SetHost(const AHost: string): IMail;
     function SetUserName(const AUserName: string): IMail;
     function SetPassword(const APassword: string): IMail;
@@ -56,9 +56,9 @@ begin
     raise Exception.Create('E-mail do remetente não informado!');
     Exit;
   end;
-  IdMessage.From.Address := AMail;
+  FIdMessage.From.Address := AMail;
   if not AName.Trim.IsEmpty then
-    IdMessage.From.Name := AName;
+    FIdMessage.From.Name := AName;
   Result := Self;
 end;
 
@@ -69,7 +69,7 @@ begin
     raise Exception.Create('E-mail não informado para cópia oculta!');
     Exit;
   end;
-  IdMessage.BccList.Add.Text := AName + ' ' + AMail;
+  FIdMessage.BccList.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
 
@@ -88,12 +88,9 @@ begin
   Result := Self;
 end;
 
-function TMail.SetBody(const ABody: string): IMail;
+function TMail.AddBody(const ABody: string): IMail;
 begin
-  IdText := TIdText.Create(IdMessage.MessageParts);
-  IdText.ContentType := 'text/html; text/plain; charset=iso-8859-1';
-  IdText.Body.Clear;
-  IdText.Body.Add(ABody);
+  FIdText.Body.Add(ABody);
   Result := Self;
 end;
 
@@ -101,7 +98,7 @@ function TMail.SetHost(const AHost: string): IMail;
 begin
   if AHost.Trim.IsEmpty then
     raise Exception.Create('Servidor não informado!');
-  IdSMTP.Host := AHost;
+  FIdSMTP.Host := AHost;
   Result := Self;
 end;
 
@@ -109,7 +106,7 @@ function TMail.SetPassword(const APassword: string): IMail;
 begin
   if APassword.Trim.IsEmpty then
     raise Exception.Create('Senha não informado!');
-  IdSMTP.Password := APassword;
+  FIdSMTP.Password := APassword;
   Result := Self;
 end;
 
@@ -117,7 +114,7 @@ function TMail.SetPort(const APort: Integer): IMail;
 begin
   if VarIsNull(APort) then
     raise Exception.Create('Senha não informado!');
-  IdSMTP.Port := APort;
+  FIdSMTP.Port := APort;
   Result := Self;
 end;
 
@@ -140,7 +137,7 @@ begin
     raise Exception.Create('E-mail não informado para cópia!');
     Exit;
   end;
-  IdMessage.CCList.Add.Text := AName + ' ' + AMail;
+  FIdMessage.CCList.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
 
@@ -151,7 +148,7 @@ begin
     raise Exception.Create('E-mail para resposta não informado!');
     Exit;
   end;
-  IdMessage.ReplyTo.Add.Text := AName + ' ' + AMail;
+  FIdMessage.ReplyTo.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
 
@@ -159,7 +156,7 @@ function TMail.AddSubject(const ASubject: string): IMail;
 begin
   if ASubject.Trim.IsEmpty then
     raise Exception.Create('Assunto não informado!');
-  IdMessage.Subject := ASubject;
+  FIdMessage.Subject := ASubject;
   Result := Self;
 end;
 
@@ -168,13 +165,14 @@ begin
   if AMail.Trim.IsEmpty then
     raise Exception.Create('E-mail do destinatário não informado!')
   else
-    IdMessage.Recipients.Add.Text := AName + ' ' + AMail;
+    FIdMessage.Recipients.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
 
 function TMail.Clear: IMail;
 begin
-  IdMessage.Clear;
+  FIdMessage.Clear;
+  FIdText.Body.Clear;
   Result := Self;
 end;
 
@@ -182,13 +180,16 @@ constructor TMail.Create;
 begin
   FIdSSLIOHandlerSocket := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
   FIdSMTP := TIdSMTP.Create(nil);
-  IdMessage := TIdMessage.Create(nil);
-  IdMessage.Encoding := meMIME;
-  IdMessage.ConvertPreamble := True;
-  IdMessage.Priority := mpNormal;
-  IdMessage.ContentType := 'multipart/mixed';
-  IdMessage.CharSet := 'ISO-8859-1';
-  IdMessage.Date := Now;
+  FIdMessage := TIdMessage.Create(nil);
+  FIdMessage.Encoding := meMIME;
+  FIdMessage.ConvertPreamble := True;
+  FIdMessage.Priority := mpNormal;
+  FIdMessage.ContentType := 'multipart/mixed';
+  FIdMessage.CharSet := 'utf-8';
+  FIdMessage.Date := Now;
+  FIdText := TIdText.Create(IdMessage.MessageParts);
+  FIdText.ContentType := 'text/html; text/plain;';
+  FIdText.CharSet := 'utf-8';
   FSSL := False;
   FAuth := False;
   FReceiptRecipient := False;
@@ -214,23 +215,23 @@ begin
     Exit(False);
   end;
 
-  IdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
-  IdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
-  IdSMTP.IOHandler := IdSSLIOHandlerSocket;
-  IdSMTP.UseTLS := utUseExplicitTLS;
+  FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
+  FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
+  FIdSMTP.IOHandler := IdSSLIOHandlerSocket;
+  FIdSMTP.UseTLS := utUseExplicitTLS;
   if FSSL then
   begin
-    IdSSLIOHandlerSocket.SSLOptions.Mode := sslmClient;
-    IdSMTP.UseTLS := utUseImplicitTLS;
+    FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmClient;
+    FIdSMTP.UseTLS := utUseImplicitTLS;
   end;
-  IdSMTP.AuthType := satNone;
+  FIdSMTP.AuthType := satNone;
   if FAuth then
-    IdSMTP.AuthType := satDefault;
+    FIdSMTP.AuthType := satDefault;
   if ReceiptRecipient then
-    IdMessage.ReceiptRecipient.Text := IdMessage.From.Name + ' ' + IdMessage.From.Address;
+    FIdMessage.ReceiptRecipient.Text := FIdMessage.From.Name + ' ' + FIdMessage.From.Address;
   try
-    IdSMTP.Connect;
-    IdSMTP.Authenticate;
+    FIdSMTP.Connect;
+    FIdSMTP.Authenticate;
   except
     on E: Exception do
     begin
@@ -240,8 +241,8 @@ begin
   end;
 
   try
-    IdSMTP.Send(IdMessage);
-    IdSMTP.Disconnect;
+    FIdSMTP.Send(IdMessage);
+    FIdSMTP.Disconnect;
     UnLoadOpenSSLLibrary;
     Result := True;
   except
@@ -253,18 +254,18 @@ end;
 function TMail.SetUpEmail: Boolean;
 begin
   Result := False;
-  if not(IdMessage.Recipients.Count < 1) then
-    if not(IdSMTP.Host.Trim.IsEmpty) then
-      if not(IdSMTP.Username.Trim.IsEmpty) then
-        if not(IdSMTP.Password.Trim.IsEmpty) then
-          Result := not(VarIsNull(IdSMTP.Port));
+  if not(FIdMessage.Recipients.Count < 1) then
+    if not(FIdSMTP.Host.Trim.IsEmpty) then
+      if not(FIdSMTP.Username.Trim.IsEmpty) then
+        if not(FIdSMTP.Password.Trim.IsEmpty) then
+          Result := not(VarIsNull(FIdSMTP.Port));
 end;
 
 function TMail.SetUserName(const AUserName: string): IMail;
 begin
   if AUserName.Trim.IsEmpty then
     raise Exception.Create('Usuário não informado!');
-  IdSMTP.Username := AUserName;
+  FIdSMTP.Username := AUserName;
   Result := Self;
 end;
 
