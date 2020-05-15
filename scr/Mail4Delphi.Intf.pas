@@ -12,7 +12,7 @@ type
     function AddReplyTo(const AMail: string; const AName: string = ''): IMail;
     function AddCC(const AMail: string; const AName: string = ''): IMail;
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
-    function SetBody(const ABody: string): IMail;
+    function AddBody(const ABody: string): IMail;
     function SetHost(const AHost: string): IMail;
     function SetUserName(const AUserName: string): IMail;
     function SetPassword(const APassword: string): IMail;
