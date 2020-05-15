@@ -91,7 +91,7 @@ begin
     .AddBCC(edtCco.Text, edtNomeCco.Text)
     .AddTo(edtTo.Text, edtNameTo.Text)
     .AddSubject(edtSubject.Text)
-    .SetBody(mmBody.Text);
+    .AddBody(mmBody.Text);
   if lbAnexo.Items.Count > 0 then
     for I := 0 to Pred(lbAnexo.Items.Count) do
       LMail.AddAttachment(lbAnexo.Items[I]);
