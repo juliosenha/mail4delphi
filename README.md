@@ -5,6 +5,8 @@
 Mail4Delphi uses the Indy component to send the email.
  
 ## Prerequisites
+* `[Required]` You need to have the libeay32.dll and ssleay32.dll dynamic library files. 
+
  * `[Optional]` For ease I recommend using the [**Boss**](https://github.com/HashLoad/boss) (Dependency Manager for Delphi) for installation, simply by running the command below on a terminal (Windows PowerShell for example):
 ```
 boss install github.com/juliosenha/mail4delphi
