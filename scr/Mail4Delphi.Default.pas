@@ -51,21 +51,22 @@ implementation
 
 function TMail.AddFrom(const AMail: string; const AName: string = ''): IMail;
 begin
-  if (AMail.Trim.IsEmpty) or (AName.Trim.IsEmpty) then
+  if AMail.Trim.IsEmpty then
   begin
-    raise Exception.Create('Informações do remetente incompletas para essa operação!');
+    raise Exception.Create('E-mail do remetente nÃ£o informado!');
     Exit;
   end;
   IdMessage.From.Address := AMail;
-  IdMessage.From.Name := AName;
+  if not AName.Trim.IsEmpty then
+    IdMessage.From.Name := AName;
   Result := Self;
 end;
 
 function TMail.AddBCC(const AMail: string; const AName: string = ''): IMail;
 begin
-  if (AMail.Trim.IsEmpty) then
+  if AMail.Trim.IsEmpty then
   begin
-    raise Exception.Create('E-mail não informado para cópia oculta!');
+    raise Exception.Create('E-mail nÃ£o informado para cÃ³pia oculta!');
     Exit;
   end;
   IdMessage.BccList.Add.Text := AName + ' ' + AMail;
@@ -98,16 +99,16 @@ end;
 
 function TMail.SetHost(const AHost: string): IMail;
 begin
-  if (AHost.Trim.IsEmpty) then
-    raise Exception.Create('Servidor não informado!');
+  if AHost.Trim.IsEmpty then
+    raise Exception.Create('Servidor nÃ£o informado!');
   IdSMTP.Host := AHost;
   Result := Self;
 end;
 
 function TMail.SetPassword(const APassword: string): IMail;
 begin
-  if (APassword.Trim.IsEmpty) then
-    raise Exception.Create('Senha não informado!');
+  if APassword.Trim.IsEmpty then
+    raise Exception.Create('Senha nÃ£o informado!');
   IdSMTP.Password := APassword;
   Result := Self;
 end;
@@ -115,7 +116,7 @@ end;
 function TMail.SetPort(const APort: Integer): IMail;
 begin
   if VarIsNull(APort) then
-    raise Exception.Create('Senha não informado!');
+    raise Exception.Create('Senha nÃ£o informado!');
   IdSMTP.Port := APort;
   Result := Self;
 end;
@@ -136,7 +137,7 @@ function TMail.AddCC(const AMail: string; const AName: string = ''): IMail;
 begin
   if AMail.Trim.IsEmpty then
   begin
-    raise Exception.Create('E-mail não informado para cópia!');
+    raise Exception.Create('E-mail nÃ£o informado para cÃ³pia!');
     Exit;
   end;
   IdMessage.CCList.Add.Text := AName + ' ' + AMail;
@@ -145,9 +146,9 @@ end;
 
 function TMail.AddReplyTo(const AMail: string; const AName: string = ''): IMail;
 begin
-  if (AMail.Trim.IsEmpty) then
+  if AMail.Trim.IsEmpty then
   begin
-    raise Exception.Create('Informações de resposta incompletas para essa operação!');
+    raise Exception.Create('E-mail para resposta nÃ£o informado!');
     Exit;
   end;
   IdMessage.ReplyTo.Add.Text := AName + ' ' + AMail;
@@ -157,15 +158,15 @@ end;
 function TMail.AddSubject(const ASubject: string): IMail;
 begin
   if ASubject.Trim.IsEmpty then
-    raise Exception.Create('Assunto não informado!');
+    raise Exception.Create('Assunto nÃ£o informado!');
   IdMessage.Subject := ASubject;
   Result := Self;
 end;
 
 function TMail.AddTo(const AMail: string; const AName: string = ''): IMail;
 begin
-  if (AMail.Trim.IsEmpty) or (AName.Trim.IsEmpty) then
-    raise Exception.Create('Informações do destinatário incompletas para essa operação!')
+  if AMail.Trim.IsEmpty then
+    raise Exception.Create('E-mail do destinatÃ¡rio nÃ£o informado!')
   else
     IdMessage.Recipients.Add.Text := AName + ' ' + AMail;
   Result := Self;
@@ -233,7 +234,7 @@ begin
   except
     on E: Exception do
     begin
-      raise Exception.Create('Erro na conexão ou autenticação: ' + E.Message);
+      raise Exception.Create('Erro na conexÃ£o ou autenticaÃ§Ã£o: ' + E.Message);
       Exit(False);
     end;
   end;
@@ -261,8 +262,8 @@ end;
 
 function TMail.SetUserName(const AUserName: string): IMail;
 begin
-  if (AUserName.Trim.IsEmpty) then
-    raise Exception.Create('Usuário não informado!');
+  if AUserName.Trim.IsEmpty then
+    raise Exception.Create('UsuÃ¡rio nÃ£o informado!');
   IdSMTP.Username := AUserName;
   Result := Self;
 end;
