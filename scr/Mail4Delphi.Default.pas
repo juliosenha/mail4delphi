@@ -1,4 +1,4 @@
-unit Mail4Delphi.Default;
+﻿unit Mail4Delphi.Default;
 
 interface
 
@@ -21,9 +21,9 @@ type
     property IdSMTP: TIdSMTP read FIdSMTP write FIdSMTP;
     property IdMessage: TIdMessage read FIdMessage write FIdMessage;
     property IdText: TIdText read FIdText write FIdText;
-    property SSL: Boolean read FSSL write FSSL;
-    property Auth: Boolean read FAuth write FAuth;
-    property ReceiptRecipient: Boolean read FReceiptRecipient write FReceiptRecipient;
+    property SetSSL: Boolean read FSSL write FSSL;
+    property SetAuth: Boolean read FAuth write FAuth;
+    property SetReceiptRecipient: Boolean read FReceiptRecipient write FReceiptRecipient;
   public
     function AddTo(const AMail: string; const AName: string = ''): IMail;
     function AddFrom(const AMail: string; const AName: string = ''): IMail;
@@ -32,14 +32,14 @@ type
     function AddCC(const AMail: string; const AName: string = ''): IMail;
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
     function AddBody(const ABody: string): IMail;
-    function SetHost(const AHost: string): IMail;
-    function SetUserName(const AUserName: string): IMail;
-    function SetPassword(const APassword: string): IMail;
-    function SetPort(const APort: Integer): IMail;
-    function SetReceiptRecipient(const AValue: Boolean): IMail;
+    function Host(const AHost: string): IMail;
+    function UserName(const AUserName: string): IMail;
+    function Password(const APassword: string): IMail;
+    function Port(const APort: Integer): IMail;
+    function ReceiptRecipient(const AValue: Boolean): IMail;
     function AddAttachment(const AFile: string): IMail;
-    function SetAuth(const AValue: Boolean): IMail;
-    function SetSSL(const AValue: Boolean): IMail;
+    function Auth(const AValue: Boolean): IMail;
+    function SSL(const AValue: Boolean): IMail;
     function Clear: IMail;
     function SendMail: Boolean;
     class function New: IMail;
@@ -82,7 +82,7 @@ begin
   Result := Self;
 end;
 
-function TMail.SetAuth(const AValue: Boolean): IMail;
+function TMail.Auth(const AValue: Boolean): IMail;
 begin
   FAuth := AValue;
   Result := Self;
@@ -94,7 +94,7 @@ begin
   Result := Self;
 end;
 
-function TMail.SetHost(const AHost: string): IMail;
+function TMail.Host(const AHost: string): IMail;
 begin
   if AHost.Trim.IsEmpty then
     raise Exception.Create('Servidor não informado!');
@@ -102,7 +102,7 @@ begin
   Result := Self;
 end;
 
-function TMail.SetPassword(const APassword: string): IMail;
+function TMail.Password(const APassword: string): IMail;
 begin
   if APassword.Trim.IsEmpty then
     raise Exception.Create('Senha não informado!');
@@ -110,7 +110,7 @@ begin
   Result := Self;
 end;
 
-function TMail.SetPort(const APort: Integer): IMail;
+function TMail.Port(const APort: Integer): IMail;
 begin
   if VarIsNull(APort) then
     raise Exception.Create('Senha não informado!');
@@ -118,13 +118,13 @@ begin
   Result := Self;
 end;
 
-function TMail.SetReceiptRecipient(const AValue: Boolean): IMail;
+function TMail.ReceiptRecipient(const AValue: Boolean): IMail;
 begin
   FReceiptRecipient := AValue;
   Result := Self;
 end;
 
-function TMail.SetSSL(const AValue: Boolean): IMail;
+function TMail.SSL(const AValue: Boolean): IMail;
 begin
   FSSL := AValue;
   Result := Self;
@@ -227,7 +227,7 @@ begin
   FIdSMTP.AuthType := satNone;
   if FAuth then
     FIdSMTP.AuthType := satDefault;
-  if ReceiptRecipient then
+  if FReceiptRecipient then
     FIdMessage.ReceiptRecipient.Text := FIdMessage.From.Name + ' ' + FIdMessage.From.Address;
   try
     FIdSMTP.Connect;
@@ -256,16 +256,16 @@ begin
   Result := False;
   if not(FIdMessage.Recipients.Count < 1) then
     if not(FIdSMTP.Host.Trim.IsEmpty) then
-      if not(FIdSMTP.Username.Trim.IsEmpty) then
+      if not(FIdSMTP.UserName.Trim.IsEmpty) then
         if not(FIdSMTP.Password.Trim.IsEmpty) then
           Result := not(VarIsNull(FIdSMTP.Port));
 end;
 
-function TMail.SetUserName(const AUserName: string): IMail;
+function TMail.UserName(const AUserName: string): IMail;
 begin
   if AUserName.Trim.IsEmpty then
     raise Exception.Create('Usuário não informado!');
-  FIdSMTP.Username := AUserName;
+  FIdSMTP.UserName := AUserName;
   Result := Self;
 end;
 
