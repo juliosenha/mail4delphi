@@ -305,9 +305,9 @@ object FrmSamples: TFrmSamples
     object Label9: TLabel
       Left = 255
       Top = 83
-      Width = 89
+      Width = 86
       Height = 13
-      Caption = 'Nome (Opicional)'
+      Caption = 'Nome (Opcional)'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -331,9 +331,9 @@ object FrmSamples: TFrmSamples
     object Label11: TLabel
       Left = 255
       Top = 129
-      Width = 89
+      Width = 86
       Height = 13
-      Caption = 'Nome (Opicional)'
+      Caption = 'Nome (Opcional)'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

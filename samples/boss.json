@@ -6,6 +6,6 @@
 	"mainsrc": "./",
 	"projects": [],
 	"dependencies": {
-		"github.com/juliosenha/mail4delphi": ">0.0.0"
+		"github.com/juliosenha/mail4delphi": "^1.0.2"
 	}
 }
