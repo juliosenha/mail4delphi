@@ -2,7 +2,7 @@ program Samples;
 
 uses
   Vcl.Forms,
-  View.Samples in 'scr\view\View.Samples.pas' {FrmSamples};
+  View.Samples in 'src\view\View.Samples.pas' {FrmSamples};
 
 {$R *.res}
 
