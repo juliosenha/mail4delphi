@@ -16,7 +16,33 @@ boss install github.com/juliosenha/mail4delphi
 If you choose to install manually, simply add the following folder to your project, in *Project > Options > Resource Compiler > Directories and Conditionals > Include file search path*
 ```
 ../mail4delphi/src
+```
 
+## Getting Started
+```pascal
+uses Mail4Delphi;
+```
+
+## Send email
+```pascal
+begin
+  TMail.New
+    .AddFrom('from', 'name')
+    .SSL(true)
+    .Host('host')
+    .Port(443)
+    .Auth(true)
+    .UserName('user')
+    .Password('pass')
+    .ReceiptRecipient(false)
+    .AddCC('cc', 'name')
+    .AddBCC('cco', 'name')
+    .AddTo('to', 'name')
+    .AddSubject('subject')
+    .AddBody('message')
+    .AddAttachment(nil)
+    .SendMail;
+end;
 ```
 
 ## Samples
@@ -24,4 +50,8 @@ Check out our sample project for each situation presented above in operation. If
 
 ![Mail4Delphi](img/Screenshot_1.png)
 
-> *Alone we go faster. Together we go further.*
+## License
+
+`Mail4Delphi` is free and open-source software licensed under the [MIT License](https://github.com/juliosenha/mail4delphi/blob/master/LICENSE).
+
+:point_right: *Alone we go faster. Together we go further.*
