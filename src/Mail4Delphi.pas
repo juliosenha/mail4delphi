@@ -1,4 +1,4 @@
-﻿unit Mail4Delphi.Default;
+﻿unit Mail4Delphi;
 
 interface
 
@@ -6,6 +6,8 @@ uses Mail4Delphi.Intf, System.Classes, System.SysUtils, IdSMTP, IdSSLOpenSSL, Id
   IdExplicitTLSClientServerBase, System.Variants;
 
 type
+  IMail = Mail4Delphi.Intf.IMail;
+
   TMail = class(TInterfacedObject, IMail)
   private
     FIdSSLIOHandlerSocket: TIdSSLIOHandlerSocketOpenSSL;
