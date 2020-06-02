@@ -70,10 +70,10 @@ object FrmSamples: TFrmSamples
     object Label7: TLabel
       Left = 357
       Top = 83
-      Width = 72
+      Width = 51
       Height = 13
       Anchors = [akTop, akRight]
-      Caption = 'Criptografada'
+      Caption = 'Encrypted'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
