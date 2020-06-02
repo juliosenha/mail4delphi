@@ -2,9 +2,8 @@ unit View.Samples;
 
 interface
 
-uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
-  Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Mail4Delphi.Intf, Mail4Delphi.Default;
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
+  Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Mail4Delphi.Intf, Mail4Delphi;
 
 type
   TFrmSamples = class(TForm)
@@ -18,7 +17,7 @@ type
     Label1: TLabel;
     Label4: TLabel;
     cbCriptocrafia: TComboBox;
-    edtUserName: TEdit;
+    edtUser: TEdit;
     edtPassword: TEdit;
     edtHost: TEdit;
     edtPort: TEdit;
@@ -26,7 +25,7 @@ type
     cbAuth: TComboBox;
     edtNameFrom: TEdit;
     chkReceiptRecipient: TCheckBox;
-    pnlHeaderConfiguracaoEmail: TPanel;
+    pnlHeaderEmailConfiguration: TPanel;
     Panel3: TPanel;
     Label2: TLabel;
     Label18: TLabel;
@@ -37,28 +36,27 @@ type
     Label11: TLabel;
     Label12: TLabel;
     edtTo: TEdit;
-    mmBody: TMemo;
+    mmMessage: TMemo;
     edtNameTo: TEdit;
     edtSubject: TEdit;
     Panel1: TPanel;
     edtCc: TEdit;
-    edtNomeCc: TEdit;
+    edtNameCc: TEdit;
     edtCco: TEdit;
-    edtNomeCco: TEdit;
-    lbAnexo: TListBox;
-    btnEnviar: TButton;
-    btnAnexar: TButton;
-    procedure btnAnexarClick(Sender: TObject);
-    procedure btnEnviarClick(Sender: TObject);
-    procedure lbAnexoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    edtNameCco: TEdit;
+    lbAttachment: TListBox;
+    btnSend: TButton;
+    btnAttachment: TButton;
+    procedure btnAttachmentClick(Sender: TObject);
+    procedure btnSendClick(Sender: TObject);
+    procedure lbAttachmentKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   end;
 
 implementation
 
 {$R *.dfm}
 
-
-procedure TFrmSamples.btnAnexarClick(Sender: TObject);
+procedure TFrmSamples.btnAttachmentClick(Sender: TObject);
 var
   LOpenDialog: TFileOpenDialog;
 begin
@@ -67,13 +65,13 @@ begin
     LOpenDialog.Options := [fdoAllowMultiSelect];
     LOpenDialog.DefaultFolder := ExtractFilePath(Application.ExeName);
     if LOpenDialog.Execute then
-      lbAnexo.Items.AddStrings(LOpenDialog.Files);
+      lbAttachment.Items.AddStrings(LOpenDialog.Files);
   finally
     LOpenDialog.Free;
   end;
 end;
 
-procedure TFrmSamples.btnEnviarClick(Sender: TObject);
+procedure TFrmSamples.btnSendClick(Sender: TObject);
 var
   LMail: IMail;
   I: Integer;
@@ -84,30 +82,30 @@ begin
     .Host(edtHost.Text)
     .Port(StrToInt(edtPort.Text))
     .Auth(cbAuth.ItemIndex = 1)
-    .UserName(edtUserName.Text)
+    .UserName(edtUser.Text)
     .Password(edtPassword.Text)
     .ReceiptRecipient(chkReceiptRecipient.Checked)
-    .AddCC(edtCc.Text, edtNomeCc.Text)
-    .AddBCC(edtCco.Text, edtNomeCco.Text)
+    .AddCC(edtCc.Text, edtNameCc.Text)
+    .AddBCC(edtCco.Text, edtNameCco.Text)
     .AddTo(edtTo.Text, edtNameTo.Text)
     .AddSubject(edtSubject.Text)
-    .AddBody(mmBody.Text);
-  if lbAnexo.Items.Count > 0 then
-    for I := 0 to Pred(lbAnexo.Items.Count) do
-      LMail.AddAttachment(lbAnexo.Items[I]);
+    .AddBody(mmMessage.Text);
+  if lbAttachment.Items.Count > 0 then
+    for I := 0 to Pred(lbAttachment.Items.Count) do
+      LMail.AddAttachment(lbAttachment.Items[I]);
   if LMail.SendMail then
-    ShowMessage('Email enviado com sucesso!');
+    ShowMessage('Email successfully sent');
 end;
 
-procedure TFrmSamples.lbAnexoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TFrmSamples.lbAttachmentKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
   I: Integer;
 begin
   if Key = VK_DELETE then
   begin
-    for I := Pred(lbAnexo.Items.Count) downto 0 do
-      if lbAnexo.Selected[I] then
-        lbAnexo.Items.Delete(I);
+    for I := Pred(lbAttachment.Items.Count) downto 0 do
+      if lbAttachment.Selected[I] then
+        lbAttachment.Items.Delete(I);
   end;
 end;
 
