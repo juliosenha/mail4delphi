@@ -30,9 +30,9 @@ object FrmSamples: TFrmSamples
     object Label3: TLabel
       Left = 10
       Top = 83
-      Width = 74
+      Width = 27
       Height = 13
-      Caption = 'Email de Envio'
+      Caption = 'Email'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -43,9 +43,9 @@ object FrmSamples: TFrmSamples
     object Label5: TLabel
       Left = 10
       Top = 129
-      Width = 73
+      Width = 62
       Height = 13
-      Caption = 'Servidor SMTP'
+      Caption = 'Server SMTP'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -56,10 +56,10 @@ object FrmSamples: TFrmSamples
     object Label6: TLabel
       Left = 357
       Top = 129
-      Width = 27
+      Width = 21
       Height = 13
       Anchors = [akTop, akRight]
-      Caption = 'Porta'
+      Caption = 'Port'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -84,9 +84,9 @@ object FrmSamples: TFrmSamples
     object Label16: TLabel
       Left = 10
       Top = 175
-      Width = 40
+      Width = 23
       Height = 13
-      Caption = 'Usu'#225'rio'
+      Caption = 'User'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -97,10 +97,10 @@ object FrmSamples: TFrmSamples
     object Label17: TLabel
       Left = 284
       Top = 175
-      Width = 32
+      Width = 49
       Height = 13
       Anchors = [akTop, akRight]
-      Caption = 'Senha'
+      Caption = 'Password'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -111,10 +111,10 @@ object FrmSamples: TFrmSamples
     object Label1: TLabel
       Left = 402
       Top = 129
-      Width = 67
+      Width = 25
       Height = 13
       Anchors = [akTop, akRight]
-      Caption = 'Autentica'#231#227'o'
+      Caption = 'Auth'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -125,9 +125,9 @@ object FrmSamples: TFrmSamples
     object Label4: TLabel
       Left = 9
       Top = 37
-      Width = 30
+      Width = 29
       Height = 13
-      Caption = 'Nome'
+      Caption = 'Name'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -148,7 +148,7 @@ object FrmSamples: TFrmSamples
         'SSL'
         'TSL')
     end
-    object edtUserName: TEdit
+    object edtUser: TEdit
       Left = 10
       Top = 194
       Width = 269
@@ -196,10 +196,10 @@ object FrmSamples: TFrmSamples
       Anchors = [akTop, akRight]
       ItemIndex = 0
       TabOrder = 5
-      Text = 'N'#227'o'
+      Text = 'No'
       Items.Strings = (
-        'N'#227'o'
-        'Sim')
+        'No'
+        'Yes')
     end
     object edtNameFrom: TEdit
       Left = 10
@@ -212,12 +212,12 @@ object FrmSamples: TFrmSamples
     object chkReceiptRecipient: TCheckBox
       Left = 10
       Top = 228
-      Width = 201
+      Width = 143
       Height = 17
-      Caption = 'Solicitar Confirma'#231#227'o de Leitura'
+      Caption = 'Request read confirmation'
       TabOrder = 8
     end
-    object pnlHeaderConfiguracaoEmail: TPanel
+    object pnlHeaderEmailConfiguration: TPanel
       Left = 0
       Top = 0
       Width = 480
@@ -225,7 +225,7 @@ object FrmSamples: TFrmSamples
       Align = alTop
       Alignment = taLeftJustify
       BevelOuter = bvNone
-      Caption = '  Configura'#231#227'o'
+      Caption = '  Configuration'
       Color = 7039851
       Font.Charset = ANSI_CHARSET
       Font.Color = clWhite
@@ -253,9 +253,9 @@ object FrmSamples: TFrmSamples
     object Label2: TLabel
       Left = 10
       Top = 180
-      Width = 42
+      Width = 38
       Height = 13
-      Caption = 'Assunto'
+      Caption = 'Subject'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -266,9 +266,9 @@ object FrmSamples: TFrmSamples
     object Label18: TLabel
       Left = 10
       Top = 36
-      Width = 93
+      Width = 27
       Height = 13
-      Caption = 'Email Destinat'#225'rio'
+      Caption = 'Email'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -279,9 +279,9 @@ object FrmSamples: TFrmSamples
     object Label19: TLabel
       Left = 255
       Top = 36
-      Width = 30
+      Width = 29
       Height = 13
-      Caption = 'Nome'
+      Caption = 'Name'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -305,9 +305,9 @@ object FrmSamples: TFrmSamples
     object Label9: TLabel
       Left = 255
       Top = 83
-      Width = 86
+      Width = 82
       Height = 13
-      Caption = 'Nome (Opcional)'
+      Caption = 'Name (optional)'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -331,9 +331,9 @@ object FrmSamples: TFrmSamples
     object Label11: TLabel
       Left = 255
       Top = 129
-      Width = 86
+      Width = 82
       Height = 13
-      Caption = 'Nome (Opcional)'
+      Caption = 'Name (optional)'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -344,9 +344,9 @@ object FrmSamples: TFrmSamples
     object Label12: TLabel
       Left = 10
       Top = 307
-      Width = 56
+      Width = 45
       Height = 13
-      Caption = 'Mensagem'
+      Caption = 'Message'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -362,7 +362,7 @@ object FrmSamples: TFrmSamples
       CharCase = ecLowerCase
       TabOrder = 0
     end
-    object mmBody: TMemo
+    object mmMessage: TMemo
       Left = 10
       Top = 326
       Width = 489
@@ -393,7 +393,7 @@ object FrmSamples: TFrmSamples
       Align = alTop
       Alignment = taLeftJustify
       BevelOuter = bvNone
-      Caption = '  Destinat'#225'rio'
+      Caption = '  Recipient'
       Color = 7039851
       Font.Charset = ANSI_CHARSET
       Font.Color = clWhite
@@ -412,7 +412,7 @@ object FrmSamples: TFrmSamples
       CharCase = ecLowerCase
       TabOrder = 5
     end
-    object edtNomeCc: TEdit
+    object edtNameCc: TEdit
       Left = 255
       Top = 102
       Width = 245
@@ -428,7 +428,7 @@ object FrmSamples: TFrmSamples
       CharCase = ecLowerCase
       TabOrder = 7
     end
-    object edtNomeCco: TEdit
+    object edtNameCco: TEdit
       Left = 255
       Top = 151
       Width = 245
@@ -436,7 +436,7 @@ object FrmSamples: TFrmSamples
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 8
     end
-    object lbAnexo: TListBox
+    object lbAttachment: TListBox
       Left = 10
       Top = 233
       Width = 489
@@ -445,25 +445,25 @@ object FrmSamples: TFrmSamples
       ItemHeight = 13
       MultiSelect = True
       TabOrder = 9
-      OnKeyDown = lbAnexoKeyDown
+      OnKeyDown = lbAttachmentKeyDown
     end
-    object btnEnviar: TButton
+    object btnSend: TButton
       Left = 338
       Top = 403
       Width = 161
       Height = 30
-      Caption = 'Enviar'
+      Caption = 'Send'
       TabOrder = 10
-      OnClick = btnEnviarClick
+      OnClick = btnSendClick
     end
-    object btnAnexar: TButton
+    object btnAttachment: TButton
       Left = 416
       Top = 288
       Width = 83
       Height = 25
-      Caption = 'Anexar'
+      Caption = 'Attachment'
       TabOrder = 11
-      OnClick = btnAnexarClick
+      OnClick = btnAttachmentClick
     end
   end
 end
