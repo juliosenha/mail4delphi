@@ -2,7 +2,10 @@
 ![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE3..10.3%20Rio-blue.svg)
 ![Platforms](https://img.shields.io/badge/Supported%20platforms-Win32%20and%20Win64-red.svg)
 
-Mail4Delphi uses the Indy component to send the email.![Mail4Delphi](img/mail.png)
+<p align="center">
+ Mail4Delphi uses the Indy component to send the email.!
+  <img src="https://github.com/juliosenha/mail4delphi/blob/master/img/mail.png">
+</p>
  
 ## Prerequisites
 * `[Required]` You need to have the libeay32.dll and ssleay32.dll dynamic library files. 
