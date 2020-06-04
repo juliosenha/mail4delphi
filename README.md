@@ -1,12 +1,17 @@
-# Mail4Delphi
-![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE3..10.3%20Rio-blue.svg)
+![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE3..10.4%20Sydney-blue.svg)
 ![Platforms](https://img.shields.io/badge/Supported%20platforms-Win32%20and%20Win64-red.svg)
+![Realese](https://img.shields.io/github/v/release/juliosenha/mail4delphi?style=flat-square.svg)
+![Contributors](https://img.shields.io/github/contributors/juliosenha/mail4delphi.svg)
+[![Bugs](https://img.shields.io/github/issues/juliosenha/mail4delphi/bug.svg)](https://github.com/juliosenha/mail4delphi/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
+![Stars](https://img.shields.io/github/stars/juliosenha/mail4delphi?style=flat-square.svg)
+![Forks](https://img.shields.io/github/forks/juliosenha/mail4delphi?style=flat-square.svg)
+[![License](https://img.shields.io/github/license/juliosenha/mail4delphi.svg)](https://github.com/juliosenha/mail4delphi/blob/master/license.txt)
 
-<p align="center">
- Mail4Delphi uses the Indy component to send the email.!
-  <img src="https://github.com/juliosenha/mail4delphi/blob/master/img/mail.png">
+<p align="center"><br>
+  <b>Mail4Delphi</b> uses the Indy component to send the email.! <br><br>
+  <img src="https://github.com/juliosenha/mail4delphi/blob/master/img/mail.png"><br>
 </p>
- 
+
 ## Prerequisites
 * `[Required]` You need to have the libeay32.dll and ssleay32.dll dynamic library files. 
 
