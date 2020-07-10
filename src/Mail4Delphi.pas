@@ -54,10 +54,7 @@ implementation
 function TMail.AddFrom(const AMail: string; const AName: string = ''): IMail;
 begin
   if AMail.Trim.IsEmpty then
-  begin
     raise Exception.Create('E-mail do remetente não informado!');
-    Exit;
-  end;
   FIdMessage.From.Address := AMail;
   if not AName.Trim.IsEmpty then
     FIdMessage.From.Name := AName;
@@ -67,10 +64,7 @@ end;
 function TMail.AddBCC(const AMail: string; const AName: string = ''): IMail;
 begin
   if AMail.Trim.IsEmpty then
-  begin
     raise Exception.Create('E-mail não informado para cópia oculta!');
-    Exit;
-  end;
   FIdMessage.BccList.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
@@ -146,10 +140,7 @@ end;
 function TMail.AddReplyTo(const AMail: string; const AName: string = ''): IMail;
 begin
   if AMail.Trim.IsEmpty then
-  begin
     raise Exception.Create('E-mail para resposta não informado!');
-    Exit;
-  end;
   FIdMessage.ReplyTo.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
@@ -212,11 +203,7 @@ end;
 function TMail.SendMail: Boolean;
 begin
   if not SetUpEmail then
-  begin
     raise Exception.Create('Dados incompletos!');
-    Exit(False);
-  end;
-
   FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
   FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
   FIdSMTP.IOHandler := IdSSLIOHandlerSocket;
@@ -236,12 +223,8 @@ begin
     FIdSMTP.Authenticate;
   except
     on E: Exception do
-    begin
       raise Exception.Create('Erro na conexão ou autenticação: ' + E.Message);
-      Exit(False);
-    end;
   end;
-
   try
     FIdSMTP.Send(IdMessage);
     FIdSMTP.Disconnect;
