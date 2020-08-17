@@ -63,9 +63,8 @@ end;
 
 function TMail.AddBCC(const AMail: string; const AName: string = ''): IMail;
 begin
-  if AMail.Trim.IsEmpty then
-    raise Exception.Create('E-mail não informado para cópia oculta!');
-  FIdMessage.BccList.Add.Text := AName + ' ' + AMail;
+  if not(AMail.Trim.IsEmpty) then
+    FIdMessage.BccList.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
 
@@ -109,7 +108,7 @@ end;
 function TMail.Port(const APort: Integer): IMail;
 begin
   if VarIsNull(APort) then
-    raise Exception.Create('Senha não informado!');
+    raise Exception.Create('Porta não informada!');
   FIdSMTP.Port := APort;
   Result := Self;
 end;
@@ -128,20 +127,15 @@ end;
 
 function TMail.AddCC(const AMail: string; const AName: string = ''): IMail;
 begin
-  if AMail.Trim.IsEmpty then
-  begin
-    raise Exception.Create('E-mail não informado para cópia!');
-    Exit;
-  end;
-  FIdMessage.CCList.Add.Text := AName + ' ' + AMail;
+  if not(AMail.Trim.IsEmpty) then
+    FIdMessage.CCList.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
 
 function TMail.AddReplyTo(const AMail: string; const AName: string = ''): IMail;
 begin
-  if AMail.Trim.IsEmpty then
-    raise Exception.Create('E-mail para resposta não informado!');
-  FIdMessage.ReplyTo.Add.Text := AName + ' ' + AMail;
+  if not(AMail.Trim.IsEmpty) then
+    FIdMessage.ReplyTo.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
 
@@ -156,9 +150,8 @@ end;
 function TMail.AddTo(const AMail: string; const AName: string = ''): IMail;
 begin
   if AMail.Trim.IsEmpty then
-    raise Exception.Create('E-mail do destinatário não informado!')
-  else
-    FIdMessage.Recipients.Add.Text := AName + ' ' + AMail;
+    raise Exception.Create('E-mail do destinatário não informado!');
+  FIdMessage.Recipients.Add.Text := AName + ' ' + AMail;
   Result := Self;
 end;
 
@@ -204,35 +197,38 @@ function TMail.SendMail: Boolean;
 begin
   if not SetUpEmail then
     raise Exception.Create('Dados incompletos!');
-  FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
-  FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
-  FIdSMTP.IOHandler := IdSSLIOHandlerSocket;
-  FIdSMTP.UseTLS := utUseExplicitTLS;
-  if FSSL then
-  begin
-    FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmClient;
-    FIdSMTP.UseTLS := utUseImplicitTLS;
-  end;
-  FIdSMTP.AuthType := satNone;
-  if FAuth then
-    FIdSMTP.AuthType := satDefault;
-  if FReceiptRecipient then
-    FIdMessage.ReceiptRecipient.Text := FIdMessage.From.Name + ' ' + FIdMessage.From.Address;
   try
-    FIdSMTP.Connect;
-    FIdSMTP.Authenticate;
-  except
-    on E: Exception do
-      raise Exception.Create('Erro na conexão ou autenticação: ' + E.Message);
-  end;
-  try
-    FIdSMTP.Send(IdMessage);
+    FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
+    FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
+    FIdSMTP.IOHandler := IdSSLIOHandlerSocket;
+    FIdSMTP.UseTLS := utUseExplicitTLS;
+    if FSSL then
+    begin
+      FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmClient;
+      FIdSMTP.UseTLS := utUseImplicitTLS;
+    end;
+    FIdSMTP.AuthType := satNone;
+    if FAuth then
+      FIdSMTP.AuthType := satDefault;
+    if FReceiptRecipient then
+      FIdMessage.ReceiptRecipient.Text := FIdMessage.From.Name + ' ' + FIdMessage.From.Address;
+    try
+      FIdSMTP.Connect;
+      FIdSMTP.Authenticate;
+    except
+      on E: Exception do
+        raise Exception.Create('Erro na conexão ou autenticação: ' + E.Message);
+    end;
+    try
+      FIdSMTP.Send(IdMessage);
+    except
+      on E: Exception do
+        raise Exception.Create('Erro ao enviar a mensagem: ' + E.Message);
+    end;
+  finally
     FIdSMTP.Disconnect;
     UnLoadOpenSSLLibrary;
     Result := True;
-  except
-    on E: Exception do
-      raise Exception.Create('Erro ao enviar a mensagem: ' + E.Message);
   end;
 end;
 
