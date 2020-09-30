@@ -12,6 +12,9 @@
   <img src="https://github.com/juliosenha/mail4delphi/blob/master/img/mail.png"><br>
 </p>
 
+ <br><br>
+[![Donate](https://stc.pagseguro.uol.com.br/public/img/botoes/doacoes/120x53-doar.gif)](https://pag.ae/7WrUXFNB3)
+
 ## Prerequisites
 * `[Required]` You need to have the libeay32.dll and ssleay32.dll dynamic library files. 
 
