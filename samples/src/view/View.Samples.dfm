@@ -153,7 +153,6 @@ object FrmSamples: TFrmSamples
       Top = 194
       Width = 269
       Height = 21
-      CharCase = ecLowerCase
       TabOrder = 6
     end
     object edtPassword: TEdit
