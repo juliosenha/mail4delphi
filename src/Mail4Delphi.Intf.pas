@@ -20,6 +20,7 @@ type
     function AddAttachment(const AFile: string): IMail;
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
+    function ContentType(const AValue: string): IMail;
     function Clear: IMail;
     function SendMail: Boolean;
     function SetUpEmail: Boolean;

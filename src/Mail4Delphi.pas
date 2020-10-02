@@ -42,6 +42,7 @@ type
     function AddAttachment(const AFile: string): IMail;
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
+    function ContentType(const AValue: string): IMail;
     function Clear: IMail;
     function SendMail: Boolean;
     class function New: IMail;
@@ -159,6 +160,12 @@ function TMail.Clear: IMail;
 begin
   FIdMessage.Clear;
   FIdText.Body.Clear;
+  Result := Self;
+end;
+
+function TMail.ContentType(const AValue: string): IMail;
+begin
+  FIdText.ContentType := AValue;
   Result := Self;
 end;
 
