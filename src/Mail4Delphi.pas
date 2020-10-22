@@ -1,9 +1,18 @@
 ﻿unit Mail4Delphi;
 
+{$IF DEFINED(FPC)}
+{$MODE DELPHI}{$H+}
+{$ENDIF}
+
 interface
 
-uses Mail4Delphi.Intf, System.Classes, System.SysUtils, IdSMTP, IdSSLOpenSSL, IdMessage, IdText, IdAttachmentFile,
-  IdExplicitTLSClientServerBase, System.Variants;
+uses
+  {$IF DEFINED(FPC)}
+    Classes, SysUtils, Variants,
+  {$ELSE}
+    System.Classes, System.SysUtils, System.Variants,
+  {$ENDIF}
+  IdSMTP, IdSSLOpenSSL, IdMessage, IdText, IdAttachmentFile, IdExplicitTLSClientServerBase, Mail4Delphi.Intf;
 
 type
   IMail = Mail4Delphi.Intf.IMail;
