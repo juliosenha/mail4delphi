@@ -43,6 +43,7 @@ type
     function AddCC(const AMail: string; const AName: string = ''): IMail;
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
     function AddBody(const ABody: string): IMail;
+    function ClearBody: IMail;
     function Host(const AHost: string): IMail;
     function UserName(const AUserName: string): IMail;
     function Password(const APassword: string): IMail;
@@ -168,6 +169,12 @@ end;
 function TMail.Clear: IMail;
 begin
   FIdMessage.Clear;
+  FIdText.Body.Clear;
+  Result := Self;
+end;
+
+function TMail.ClearBody: IMail;
+begin
   FIdText.Body.Clear;
   Result := Self;
 end;
