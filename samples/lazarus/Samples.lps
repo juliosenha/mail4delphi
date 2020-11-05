@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="4">
+      <Unit0>
+        <Filename Value="Samples.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="18" Y="10"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="src\view\view.samples.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrmSamples"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="View.Samples"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="156" Y="4"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\..\src\Mail4Delphi.Intf.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\..\src\Mail4Delphi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="228"/>
+        <CursorPos X="52" Y="9"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit3>
+    </Units>
+    <JumpHistory Count="11" HistoryIndex="10">
+      <Position1>
+        <Filename Value="Samples.lpr"/>
+        <Caret Line="16" Column="64"/>
+      </Position1>
+      <Position2>
+        <Filename Value="src\view\view.samples.pas"/>
+        <Caret Line="80" Column="3" TopLine="49"/>
+      </Position2>
+      <Position3>
+        <Filename Value="src\view\view.samples.pas"/>
+        <Caret Line="122" Column="48" TopLine="88"/>
+      </Position3>
+      <Position4>
+        <Filename Value="src\view\view.samples.pas"/>
+        <Caret Line="8" Column="82"/>
+      </Position4>
+      <Position5>
+        <Filename Value="src\view\view.samples.pas"/>
+        <Caret Line="105" Column="5" TopLine="49"/>
+      </Position5>
+      <Position6>
+        <Filename Value="Samples.lpr"/>
+        <Caret Line="10" Column="9"/>
+      </Position6>
+      <Position7>
+        <Filename Value="src\view\view.samples.pas"/>
+        <Caret Line="3" Column="81"/>
+      </Position7>
+      <Position8>
+        <Filename Value="src\view\view.samples.pas"/>
+        <Caret Line="8" Column="98"/>
+      </Position8>
+      <Position9>
+        <Filename Value="Samples.lpr"/>
+        <Caret Line="10" Column="18"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\..\src\Mail4Delphi.pas"/>
+        <Caret Line="7" Column="53"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\..\src\Mail4Delphi.pas"/>
+        <Caret Line="15" Column="104"/>
+      </Position11>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

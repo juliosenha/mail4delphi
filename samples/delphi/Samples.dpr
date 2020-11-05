@@ -3,8 +3,8 @@ program Samples;
 uses
   Vcl.Forms,
   View.Samples in 'src\view\View.Samples.pas' {FrmSamples},
-  Mail4Delphi in '..\src\Mail4Delphi.pas',
-  Mail4Delphi.Intf in '..\src\Mail4Delphi.Intf.pas';
+  Mail4Delphi.Intf in '..\..\src\Mail4Delphi.Intf.pas',
+  Mail4Delphi in '..\..\src\Mail4Delphi.pas';
 
 {$R *.res}
 

@@ -1,4 +1,5 @@
 ![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE3..10.4%20Sydney-blue.svg)
+![Lazarus Supported Versions](https://img.shields.io/badge/Lazarus/FPC%20Supported%20Versions-2.0.10%20-yellow.svg)
 ![Platforms](https://img.shields.io/badge/Supported%20platforms-Win32%20and%20Win64-red.svg)
 ![Realese](https://img.shields.io/github/v/release/juliosenha/mail4delphi?style=flat-square.svg)
 ![Contributors](https://img.shields.io/github/contributors/juliosenha/mail4delphi.svg)
@@ -8,13 +9,18 @@
 [![License](https://img.shields.io/github/license/juliosenha/mail4delphi.svg)](https://github.com/juliosenha/mail4delphi/blob/master/license.txt)
 
 <p align="center"><br>
-  <b>Mail4Delphi</b> uses the Indy component to send the email.! <br><br>
+  <b>Mail4Delphi</b> uses the Indy component to send the email.! <br>Compatible with Lazarus/FPC<br>
   <img src="https://github.com/juliosenha/mail4delphi/blob/master/img/mail.png"><br>
 </p>
+
+ <br><br>
+[![Donate](https://stc.pagseguro.uol.com.br/public/img/botoes/doacoes/120x53-doar.gif)](https://pag.ae/7WrUXFNB3)
 
 ## Prerequisites
 * `[Required]` You need to have the libeay32.dll and ssleay32.dll dynamic library files. 
 
+
+## Boss Installation
  * `[Optional]` For ease I recommend using the [**Boss**](https://github.com/HashLoad/boss) (Dependency Manager for Delphi) for installation, simply by running the command below on a terminal (Windows PowerShell for example):
 ```
 boss install github.com/juliosenha/mail4delphi

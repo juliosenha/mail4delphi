@@ -1,9 +1,18 @@
 ﻿unit Mail4Delphi;
 
+{$IF DEFINED(FPC)}
+{$MODE DELPHI}{$H+}
+{$ENDIF}
+
 interface
 
-uses Mail4Delphi.Intf, System.Classes, System.SysUtils, IdSMTP, IdSSLOpenSSL, IdMessage, IdText, IdAttachmentFile,
-  IdExplicitTLSClientServerBase, System.Variants;
+uses
+  {$IF DEFINED(FPC)}
+    Classes, SysUtils, Variants,
+  {$ELSE}
+    System.Classes, System.SysUtils, System.Variants,
+  {$ENDIF}
+  IdSMTP, IdSSLOpenSSL, IdMessage, IdText, IdAttachmentFile, IdExplicitTLSClientServerBase, Mail4Delphi.Intf;
 
 type
   IMail = Mail4Delphi.Intf.IMail;
@@ -42,6 +51,7 @@ type
     function AddAttachment(const AFile: string): IMail;
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
+    function ContentType(const AValue: string): IMail;
     function Clear: IMail;
     function SendMail: Boolean;
     class function New: IMail;
@@ -159,6 +169,12 @@ function TMail.Clear: IMail;
 begin
   FIdMessage.Clear;
   FIdText.Body.Clear;
+  Result := Self;
+end;
+
+function TMail.ContentType(const AValue: string): IMail;
+begin
+  FIdText.ContentType := AValue;
   Result := Self;
 end;
 
