@@ -26,18 +26,9 @@ type
     FSSL: Boolean;
     FAuth: Boolean;
     FReceiptRecipient: Boolean;
-    function SetUpEmail: Boolean;
-  protected
-    property IdSSLIOHandlerSocket: TIdSSLIOHandlerSocketOpenSSL read FIdSSLIOHandlerSocket write FIdSSLIOHandlerSocket;
-    property IdSMTP: TIdSMTP read FIdSMTP write FIdSMTP;
-    property IdMessage: TIdMessage read FIdMessage write FIdMessage;
-    property IdText: TIdText read FIdText write FIdText;
-    property SetSSL: Boolean read FSSL write FSSL;
-    property SetAuth: Boolean read FAuth write FAuth;
-    property SetReceiptRecipient: Boolean read FReceiptRecipient write FReceiptRecipient;
-  public
     function AddTo(const AMail: string; const AName: string = ''): IMail;
     function AddFrom(const AMail: string; const AName: string = ''): IMail;
+    function ReceiptRecipient(const AValue: Boolean): IMail;
     function AddSubject(const ASubject: string): IMail;
     function AddReplyTo(const AMail: string; const AName: string = ''): IMail;
     function AddCC(const AMail: string; const AName: string = ''): IMail;
@@ -48,13 +39,22 @@ type
     function UserName(const AUserName: string): IMail;
     function Password(const APassword: string): IMail;
     function Port(const APort: Integer): IMail;
-    function ReceiptRecipient(const AValue: Boolean): IMail;
     function AddAttachment(const AFile: string): IMail;
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
     function ContentType(const AValue: string): IMail;
     function Clear: IMail;
     function SendMail: Boolean;
+    function SetUpEmail: Boolean;
+  protected
+    property IdSSLIOHandlerSocket: TIdSSLIOHandlerSocketOpenSSL read FIdSSLIOHandlerSocket write FIdSSLIOHandlerSocket;
+    property IdSMTP: TIdSMTP read FIdSMTP write FIdSMTP;
+    property IdMessage: TIdMessage read FIdMessage write FIdMessage;
+    property IdText: TIdText read FIdText write FIdText;
+    property SetSSL: Boolean read FSSL write FSSL;
+    property SetAuth: Boolean read FAuth write FAuth;
+    property SetReceiptRecipient: Boolean read FReceiptRecipient write FReceiptRecipient;
+  public
     class function New: IMail;
     constructor Create;
     destructor Destroy; override;
