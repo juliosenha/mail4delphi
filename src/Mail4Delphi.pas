@@ -46,6 +46,8 @@ type
     function Clear: IMail;
     function SendMail: Boolean;
     function SetUpEmail: Boolean;
+    function Connect: Boolean;
+    function Disconnect: Boolean;
   protected
     property IdSSLIOHandlerSocket: TIdSSLIOHandlerSocketOpenSSL read FIdSSLIOHandlerSocket write FIdSSLIOHandlerSocket;
     property IdSMTP: TIdSMTP read FIdSMTP write FIdSMTP;
@@ -179,6 +181,34 @@ begin
   Result := Self;
 end;
 
+function TMail.Connect: Boolean;
+begin
+  if not SetUpEmail then
+    raise Exception.Create('Dados incompletos!');
+  FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
+  FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
+  FIdSMTP.IOHandler := IdSSLIOHandlerSocket;
+  FIdSMTP.UseTLS := utUseExplicitTLS;
+  if FSSL then
+  begin
+    FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmClient;
+    FIdSMTP.UseTLS := utUseImplicitTLS;
+  end;
+  FIdSMTP.AuthType := satNone;
+  if FAuth then
+    FIdSMTP.AuthType := satDefault;
+  if FReceiptRecipient then
+    FIdMessage.ReceiptRecipient.Text := FIdMessage.From.Name + ' ' + FIdMessage.From.Address;
+  try
+    FIdSMTP.Connect;
+    FIdSMTP.Authenticate;
+    Result := True;
+  except
+    on E: Exception do
+      raise Exception.Create('Erro na conexão ou autenticação: ' + E.Message);
+  end;
+end;
+
 function TMail.ContentType(const AValue: string): IMail;
 begin
   FIdText.ContentType := AValue;
@@ -211,6 +241,13 @@ begin
   FreeAndNil(FIdSMTP);
 end;
 
+function TMail.Disconnect: Boolean;
+begin
+  FIdSMTP.Disconnect;
+  UnLoadOpenSSLLibrary;
+  Result := True;
+end;
+
 class function TMail.New: IMail;
 begin
   Result := TMail.Create;
@@ -218,40 +255,17 @@ end;
 
 function TMail.SendMail: Boolean;
 begin
-  if not SetUpEmail then
-    raise Exception.Create('Dados incompletos!');
+  Self.Connect;
   try
-    FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
-    FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
-    FIdSMTP.IOHandler := IdSSLIOHandlerSocket;
-    FIdSMTP.UseTLS := utUseExplicitTLS;
-    if FSSL then
-    begin
-      FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmClient;
-      FIdSMTP.UseTLS := utUseImplicitTLS;
-    end;
-    FIdSMTP.AuthType := satNone;
-    if FAuth then
-      FIdSMTP.AuthType := satDefault;
-    if FReceiptRecipient then
-      FIdMessage.ReceiptRecipient.Text := FIdMessage.From.Name + ' ' + FIdMessage.From.Address;
-    try
-      FIdSMTP.Connect;
-      FIdSMTP.Authenticate;
-    except
-      on E: Exception do
-        raise Exception.Create('Erro na conexão ou autenticação: ' + E.Message);
-    end;
     try
       FIdSMTP.Send(IdMessage);
+      Result := True;
     except
       on E: Exception do
         raise Exception.Create('Erro ao enviar a mensagem: ' + E.Message);
     end;
   finally
-    FIdSMTP.Disconnect;
-    UnLoadOpenSSLLibrary;
-    Result := True;
+    Self.Disconnect;
   end;
 end;
 
