@@ -199,11 +199,19 @@ begin
     FIdMessage.ReceiptRecipient.Text := FIdMessage.From.Name + ' ' + FIdMessage.From.Address;
   try
     FIdSMTP.Connect;
+  except
+    on E: Exception do
+      raise Exception.Create('Erro na conexão: ' + E.Message);
+  end;
+  try
     FIdSMTP.Authenticate;
     Result := True;
   except
     on E: Exception do
-      raise Exception.Create('Erro na conexão ou autenticação: ' + E.Message);
+    begin
+      Self.Disconnect;
+      raise Exception.Create('Erro na autenticação: ' + E.Message);
+    end;
   end;
 end;
 
