@@ -7,11 +7,11 @@
 interface
 
 uses
-  {$IF DEFINED(FPC)}
+{$IF DEFINED(FPC)}
     Classes, SysUtils, Variants,
-  {$ELSE}
+{$ELSE}
     System.Classes, System.SysUtils, System.Variants,
-  {$ENDIF}
+{$ENDIF}
   IdSMTP, IdSSLOpenSSL, IdMessage, IdText, IdAttachmentFile, IdExplicitTLSClientServerBase, Mail4Delphi.Intf;
 
 type
@@ -183,8 +183,6 @@ end;
 
 function TMail.Connect: Boolean;
 begin
-  if not SetUpEmail then
-    raise Exception.Create('Dados incompletos!');
   FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
   FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
   FIdSMTP.IOHandler := IdSSLIOHandlerSocket;
@@ -255,7 +253,10 @@ end;
 
 function TMail.SendMail: Boolean;
 begin
-  Self.Connect;
+  if not SetUpEmail then
+    raise Exception.Create('Dados incompletos!');
+  if not FIdSMTP.Connected then
+    Self.Connect;
   try
     try
       FIdSMTP.Send(IdMessage);
