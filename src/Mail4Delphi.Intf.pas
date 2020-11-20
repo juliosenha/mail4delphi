@@ -25,6 +25,8 @@ type
     function Clear: IMail;
     function SendMail: Boolean;
     function SetUpEmail: Boolean;
+    function Connect: Boolean;
+    function Disconnect: Boolean;
   end;
 
 implementation
