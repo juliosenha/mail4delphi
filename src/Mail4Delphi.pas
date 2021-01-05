@@ -7,17 +7,20 @@
 interface
 
 uses
-{$IF DEFINED(FPC)}
+  {$IF DEFINED(FPC)}
     Classes, SysUtils, Variants,
-{$ELSE}
+  {$ELSE}
     System.Classes, System.SysUtils, System.Variants,
-{$ENDIF}
+  {$ENDIF}
   IdSMTP, IdSSLOpenSSL, IdMessage, IdText, IdAttachmentFile, IdExplicitTLSClientServerBase, Mail4Delphi.Intf;
 
 type
   IMail = Mail4Delphi.Intf.IMail;
 
   TMail = class(TInterfacedObject, IMail)
+  private const
+    CONNECT_TIMEOUT = 10000;
+    READ_TIMEOUT = 10000;
   private
     FIdSSLIOHandlerSocket: TIdSSLIOHandlerSocketOpenSSL;
     FIdSMTP: TIdSMTP;
@@ -225,6 +228,8 @@ constructor TMail.Create;
 begin
   FIdSSLIOHandlerSocket := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
   FIdSMTP := TIdSMTP.Create(nil);
+  FIdSMTP.ConnectTimeout := CONNECT_TIMEOUT;
+  FIdSMTP.ReadTimeout := READ_TIMEOUT;
   FIdMessage := TIdMessage.Create(nil);
   FIdMessage.Encoding := meMIME;
   FIdMessage.ConvertPreamble := True;
