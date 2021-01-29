@@ -12,7 +12,13 @@ uses
   {$ELSE}
     System.Classes, System.SysUtils, System.Variants,
   {$ENDIF}
-  IdSMTP, IdSSLOpenSSL, IdMessage, IdText, IdAttachmentFile, IdExplicitTLSClientServerBase, Mail4Delphi.Intf;
+  IdSMTP,
+  IdSSLOpenSSL,
+  IdMessage,
+  IdText,
+  IdAttachmentFile,
+  IdExplicitTLSClientServerBase,
+  Mail4Delphi.Intf;
 
 type
   IMail = Mail4Delphi.Intf.IMail;
@@ -38,11 +44,15 @@ type
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
     function AddBody(const ABody: string): IMail;
     function ClearBody: IMail;
+    function ClearAttachments: IMail;
     function Host(const AHost: string): IMail;
     function UserName(const AUserName: string): IMail;
     function Password(const APassword: string): IMail;
     function Port(const APort: Integer): IMail;
-    function AddAttachment(const AFile: string): IMail;
+    function AddAttachment(const AFile: string;
+      ATemporaryFile: Boolean = False): IMail; overload;
+    function AddAttachment(const AStream: TStream;
+      const AFileName: string; AContentType: string = ''): IMail; overload;
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
     function ContentType(const AValue: string): IMail;
@@ -67,6 +77,10 @@ type
 
 implementation
 
+uses
+  IdMessageParts,
+  IdGlobalProtocols;
+
 function TMail.AddFrom(const AMail: string; const AName: string = ''): IMail;
 begin
   if AMail.Trim.IsEmpty then
@@ -84,12 +98,31 @@ begin
   Result := Self;
 end;
 
-function TMail.AddAttachment(const AFile: string): IMail;
+function TMail.AddAttachment(const AFile: string;
+  ATemporaryFile: Boolean): IMail;
 var
   LFile: TIdAttachmentFile;
 begin
   LFile := TIdAttachmentFile.Create(IdMessage.MessageParts, AFile);
-  LFile.ContentDescription := 'Arquivo Anexo: ' + ExtractFileName(AFile);
+  LFile.ContentDescription := ExtractFileName(AFile);
+  LFile.FileIsTempFile := ATemporaryFile;
+  Result := Self;
+end;
+
+function TMail.AddAttachment(const AStream: TStream; const AFileName: string;
+  AContentType: string): IMail;
+var
+  LFile: TIdAttachmentFile;
+begin
+  AStream.Position := 0;
+  LFile := TIdAttachmentFile.Create(IdMessage.MessageParts, AFileName);
+  LFile.StoredPathName := '';
+  LFile.ContentDescription := AFileName;
+  if AContentType.Trim.IsEmpty then
+    LFile.ContentType := GetMimeTypeFromFile(AFileName)
+  else
+    LFile.ContentType := AContentType;
+  LFile.LoadFromStream(AStream);
   Result := Self;
 end;
 
@@ -173,8 +206,36 @@ end;
 
 function TMail.Clear: IMail;
 begin
-  FIdMessage.Clear;
-  FIdText.Body.Clear;
+  {
+  FIdMessage.Clear; // Removed since it leads to AVs
+  }
+  with IdMessage do
+  begin
+    ClearHeader;
+    Encoding := meMIME;
+    ConvertPreamble := True;
+    Priority := mpNormal;
+    ContentType := 'multipart/mixed';
+    CharSet := 'utf-8';
+    Date := Now;
+  end;
+  ClearAttachments;
+  ClearBody;
+  Result := Self;
+end;
+
+function TMail.ClearAttachments: IMail;
+var
+  I: Integer;
+begin
+  with IdMessage.MessageParts do
+  begin
+    for I := Count-1 downto 0 do
+    begin
+      if Items[I].PartType=TIdMessagePartType.mptAttachment then
+        Delete(I);
+    end;
+  end;
   Result := Self;
 end;
 

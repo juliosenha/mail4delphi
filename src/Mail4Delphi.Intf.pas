@@ -2,6 +2,9 @@ unit Mail4Delphi.Intf;
 
 interface
 
+uses
+  System.Classes;
+
 type
   IMail = interface
     ['{A63918AD-EA2C-4CB9-98C5-90C3BAB95144}']
@@ -14,11 +17,15 @@ type
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
     function AddBody(const ABody: string): IMail;
     function ClearBody: IMail;
+    function ClearAttachments: IMail;
     function Host(const AHost: string): IMail;
     function UserName(const AUserName: string): IMail;
     function Password(const APassword: string): IMail;
     function Port(const APort: Integer): IMail;
-    function AddAttachment(const AFile: string): IMail;
+    function AddAttachment(const AFile: string;
+      ATemporaryFile: Boolean = False): IMail; overload;
+    function AddAttachment(const AStream: TStream;
+      const AFileName: string; AContentType: string = ''): IMail; overload;
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
     function ContentType(const AValue: string): IMail;
