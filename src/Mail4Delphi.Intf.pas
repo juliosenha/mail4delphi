@@ -3,7 +3,11 @@ unit Mail4Delphi.Intf;
 interface
 
 uses
-  System.Classes;
+  {$IF DEFINED(FPC)}
+    Classes;
+  {$ELSE}
+    System.Classes;
+  {$ENDIF}
 
 type
   IMail = interface
