@@ -29,7 +29,7 @@ type
     function AddAttachment(const AFile: string;
       ATemporaryFile: Boolean = False): IMail; overload;
     function AddAttachment(const AStream: TStream;
-      const AFileName: string; AContentType: string = ''): IMail; overload;
+      const AFileName: string; const AContentType: string = ''): IMail; overload;
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
     function ContentType(const AValue: string): IMail;
