@@ -159,7 +159,7 @@ object FrmSamples: TFrmSamples
     object edtPassword: TEdit
       Left = 285
       Top = 194
-      Width = 185
+      Width = 184
       Height = 21
       PasswordChar = '*'
       TabOrder = 7
@@ -191,7 +191,7 @@ object FrmSamples: TFrmSamples
     object cbAuth: TComboBox
       Left = 403
       Top = 148
-      Width = 67
+      Width = 66
       Height = 21
       Anchors = [akTop, akRight]
       ItemIndex = 0
@@ -204,7 +204,7 @@ object FrmSamples: TFrmSamples
     object edtNameFrom: TEdit
       Left = 9
       Top = 55
-      Width = 496
+      Width = 460
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -247,7 +247,6 @@ object FrmSamples: TFrmSamples
     BevelOuter = bvNone
     ParentBackground = False
     TabOrder = 1
-    ExplicitTop = -2
     DesignSize = (
       510
       445)
@@ -385,6 +384,7 @@ object FrmSamples: TFrmSamples
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 2
+      Text = 'teste'
     end
     object Panel1: TPanel
       Left = 0

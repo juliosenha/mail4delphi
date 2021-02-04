@@ -7,18 +7,12 @@
 interface
 
 uses
-  {$IF DEFINED(FPC)}
+{$IF DEFINED(FPC)}
     Classes, SysUtils, Variants,
-  {$ELSE}
+{$ELSE}
     System.Classes, System.SysUtils, System.Variants,
-  {$ENDIF}
-  IdSMTP,
-  IdSSLOpenSSL,
-  IdMessage,
-  IdText,
-  IdAttachmentFile,
-  IdExplicitTLSClientServerBase,
-  Mail4Delphi.Intf;
+{$ENDIF}
+  IdSMTP, IdSSLOpenSSL, IdMessage, IdMessageParts, IdText, IdAttachmentFile, IdExplicitTLSClientServerBase, Mail4Delphi.Intf;
 
 type
   IMail = Mail4Delphi.Intf.IMail;
@@ -36,9 +30,9 @@ type
     FAuth: Boolean;
     FReceiptRecipient: Boolean;
     function AddTo(const AMail: string; const AName: string = ''): IMail;
-    function AddFrom(const AMail: string; const AName: string = ''): IMail;
+    function From(const AMail: string; const AName: string = ''): IMail;
     function ReceiptRecipient(const AValue: Boolean): IMail;
-    function AddSubject(const ASubject: string): IMail;
+    function Subject(const ASubject: string): IMail;
     function AddReplyTo(const AMail: string; const AName: string = ''): IMail;
     function AddCC(const AMail: string; const AName: string = ''): IMail;
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
@@ -49,10 +43,8 @@ type
     function UserName(const AUserName: string): IMail;
     function Password(const APassword: string): IMail;
     function Port(const APort: Integer): IMail;
-    function AddAttachment(const AFile: string;
-      ATemporaryFile: Boolean = False): IMail; overload;
-    function AddAttachment(const AStream: TStream;
-      const AFileName: string; const AContentType: string = ''): IMail; overload;
+    function AddAttachment(const AFile: string; ATemporaryFile: Boolean = False): IMail; overload;
+    function AddAttachment(const AStream: TStream; const AFileName: string; const AContentType: string = ''): IMail; overload;
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
     function ContentType(const AValue: string): IMail;
@@ -61,6 +53,7 @@ type
     function SetUpEmail: Boolean;
     function Connect: Boolean;
     function Disconnect: Boolean;
+    function MessageDefault: IMail;
   protected
     property IdSSLIOHandlerSocket: TIdSSLIOHandlerSocketOpenSSL read FIdSSLIOHandlerSocket write FIdSSLIOHandlerSocket;
     property IdSMTP: TIdSMTP read FIdSMTP write FIdSMTP;
@@ -77,45 +70,44 @@ type
 
 implementation
 
-uses
-  IdMessageParts;
-
-function TMail.AddFrom(const AMail: string; const AName: string = ''): IMail;
+function TMail.From(const AMail: string; const AName: string = ''): IMail;
 begin
   if AMail.Trim.IsEmpty then
-    raise Exception.Create('E-mail do remetente não informado!');
-  FIdMessage.From.Address := AMail;
-  if not AName.Trim.IsEmpty then
-    FIdMessage.From.Name := AName;
+    raise Exception.Create('Sender email not informed!');
+  FIdMessage.From.Address := AMail.Trim;
+  FIdMessage.From.Name := AName.Trim;
   Result := Self;
 end;
 
 function TMail.AddBCC(const AMail: string; const AName: string = ''): IMail;
 begin
-  if not(AMail.Trim.IsEmpty) then
-    FIdMessage.BccList.Add.Text := AName + ' ' + AMail;
   Result := Self;
+  if AMail.Trim.IsEmpty then
+    Exit;
+  with FIdMessage.BccList.Add do
+  begin
+    Address := AMail.Trim;
+    Name := AName.Trim;
+  end;
 end;
 
-function TMail.AddAttachment(const AFile: string;
-  ATemporaryFile: Boolean): IMail;
+function TMail.AddAttachment(const AFile: string; ATemporaryFile: Boolean): IMail;
 var
   LFile: TIdAttachmentFile;
 begin
-  LFile := TIdAttachmentFile.Create(IdMessage.MessageParts, AFile);
+  LFile := TIdAttachmentFile.Create(FIdMessage.MessageParts, AFile);
   LFile.ContentDescription := ExtractFileName(AFile);
   LFile.FileIsTempFile := ATemporaryFile;
   Result := Self;
 end;
 
-function TMail.AddAttachment(const AStream: TStream; const AFileName: string;
-  const AContentType: string): IMail;
+function TMail.AddAttachment(const AStream: TStream; const AFileName: string; const AContentType: string): IMail;
 var
   LFile: TIdAttachmentFile;
 begin
   AStream.Position := 0;
-  LFile := TIdAttachmentFile.Create(IdMessage.MessageParts, AFileName);
-  LFile.StoredPathName := '';
+  LFile := TIdAttachmentFile.Create(FIdMessage.MessageParts, AFileName);
+  LFile.StoredPathName := EmptyStr;
   LFile.ContentDescription := AFileName;
   if not AContentType.Trim.IsEmpty then
     LFile.ContentType := AContentType;
@@ -138,15 +130,26 @@ end;
 function TMail.Host(const AHost: string): IMail;
 begin
   if AHost.Trim.IsEmpty then
-    raise Exception.Create('Servidor não informado!');
+    raise Exception.Create('Server not informed!');
   FIdSMTP.Host := AHost;
+  Result := Self;
+end;
+
+function TMail.MessageDefault: IMail;
+begin
+  FIdMessage.Encoding := meMIME;
+  FIdMessage.ConvertPreamble := True;
+  FIdMessage.Priority := mpNormal;
+  FIdMessage.ContentType := 'multipart/mixed';
+  FIdMessage.CharSet := 'utf-8';
+  FIdMessage.Date := Now;
   Result := Self;
 end;
 
 function TMail.Password(const APassword: string): IMail;
 begin
   if APassword.Trim.IsEmpty then
-    raise Exception.Create('Senha não informado!');
+    raise Exception.Create('Password not informed!');
   FIdSMTP.Password := APassword;
   Result := Self;
 end;
@@ -154,7 +157,7 @@ end;
 function TMail.Port(const APort: Integer): IMail;
 begin
   if VarIsNull(APort) then
-    raise Exception.Create('Porta não informada!');
+    raise Exception.Create('Port not informed!');
   FIdSMTP.Port := APort;
   Result := Self;
 end;
@@ -173,26 +176,32 @@ end;
 
 function TMail.AddCC(const AMail: string; const AName: string = ''): IMail;
 begin
-  if not(AMail.Trim.IsEmpty) then
-    FIdMessage.CCList.Add.Text := AName + ' ' + AMail;
   Result := Self;
+  if AMail.Trim.IsEmpty then
+    Exit;
+  with FIdMessage.CCList.Add do
+  begin
+    Address := AMail.Trim;
+    Name := AName.Trim;
+  end;
 end;
 
 function TMail.AddReplyTo(const AMail: string; const AName: string = ''): IMail;
 begin
-  if not(AMail.Trim.IsEmpty) then
-    with FIdMessage.ReplyTo.Add do
-    begin
-      Address := AMail.Trim;
-      Name := AName.Trim;
-    end;
   Result := Self;
+  if AMail.Trim.IsEmpty then
+    Exit;
+  with FIdMessage.ReplyTo.Add do
+  begin
+    Address := AMail.Trim;
+    Name := AName.Trim;
+  end;
 end;
 
-function TMail.AddSubject(const ASubject: string): IMail;
+function TMail.Subject(const ASubject: string): IMail;
 begin
   if ASubject.Trim.IsEmpty then
-    raise Exception.Create('Assunto não informado!');
+    raise Exception.Create('Subject not informed!');
   FIdMessage.Subject := ASubject;
   Result := Self;
 end;
@@ -200,7 +209,7 @@ end;
 function TMail.AddTo(const AMail: string; const AName: string = ''): IMail;
 begin
   if AMail.Trim.IsEmpty then
-    raise Exception.Create('E-mail do destinatário não informado!');
+    raise Exception.Create('Recipient email not informed!');
   with FIdMessage.Recipients.Add do
   begin
     Address := AMail.Trim;
@@ -211,21 +220,10 @@ end;
 
 function TMail.Clear: IMail;
 begin
-  {
-  FIdMessage.Clear; // Removed since it leads to AVs
-  }
-  with IdMessage do
-  begin
-    ClearHeader;
-    Encoding := meMIME;
-    ConvertPreamble := True;
-    Priority := mpNormal;
-    ContentType := 'multipart/mixed';
-    CharSet := 'utf-8';
-    Date := Now;
-  end;
-  ClearAttachments;
-  ClearBody;
+  FIdMessage.ClearHeader;
+  Self.MessageDefault;
+  Self.ClearAttachments;
+  Self.ClearBody;
   Result := Self;
 end;
 
@@ -233,13 +231,10 @@ function TMail.ClearAttachments: IMail;
 var
   I: Integer;
 begin
-  with IdMessage.MessageParts do
+  for I := Pred(FIdMessage.MessageParts.Count) downto 0 do
   begin
-    for I := Count-1 downto 0 do
-    begin
-      if Items[I].PartType=TIdMessagePartType.mptAttachment then
-        Delete(I);
-    end;
+    if FIdMessage.MessageParts.Items[I].PartType = TIdMessagePartType.mptAttachment then
+      FIdMessage.MessageParts.Delete(I);
   end;
   Result := Self;
 end;
@@ -270,7 +265,7 @@ begin
     FIdSMTP.Connect;
   except
     on E: Exception do
-      raise Exception.Create('Erro na conexão: ' + E.Message);
+      raise Exception.Create('Connection error: ' + E.Message);
   end;
   try
     FIdSMTP.Authenticate;
@@ -279,7 +274,7 @@ begin
     on E: Exception do
     begin
       Self.Disconnect;
-      raise Exception.Create('Erro na autenticação: ' + E.Message);
+      raise Exception.Create('Authentication error:' + E.Message);
     end;
   end;
 end;
@@ -331,24 +326,21 @@ begin
 end;
 
 function TMail.SendMail: Boolean;
-var
-  LImplicitConnection: Boolean;
 begin
-  LImplicitConnection := False;
   if not SetUpEmail then
-    raise Exception.Create('Dados incompletos!');
+    raise Exception.Create('Incomplete data!');
   if not FIdSMTP.Connected then
-    LImplicitConnection := Self.Connect;
+    Self.Connect;
   try
     try
-      FIdSMTP.Send(IdMessage);
+      FIdSMTP.Send(FIdMessage);
       Result := True;
     except
       on E: Exception do
-        raise Exception.Create('Erro ao enviar a mensagem: ' + E.Message);
+        raise Exception.Create('Error sending message: ' + E.Message);
     end;
   finally
-    if LImplicitConnection then
+    if FIdSMTP.Connected then
       Self.Disconnect;
   end;
 end;
@@ -366,7 +358,7 @@ end;
 function TMail.UserName(const AUserName: string): IMail;
 begin
   if AUserName.Trim.IsEmpty then
-    raise Exception.Create('Usuário não informado!');
+    raise Exception.Create('User not informed!');
   FIdSMTP.UserName := AUserName;
   Result := Self;
 end;
