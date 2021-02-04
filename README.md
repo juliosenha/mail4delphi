@@ -41,7 +41,7 @@ uses Mail4Delphi;
 ```pascal
 begin
   TMail.New
-    .AddFrom('from', 'name')
+    .From('from', 'name')
     .SSL(true)
     .Host('host')
     .Port(443)
@@ -52,7 +52,7 @@ begin
     .AddCC('cc', 'name')
     .AddBCC('cco', 'name')
     .AddTo('to', 'name')
-    .AddSubject('subject')
+    .Subject('subject')
     .AddBody('message')
     .AddAttachment(nil)
     .SendMail;
