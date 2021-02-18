@@ -52,7 +52,6 @@ type
     pnlHeaderEmailConfiguration: TPanel;
     procedure btnAttachmentClick(Sender: TObject);
     procedure btnSendClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure lbAttachmentKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   end;
 
@@ -62,12 +61,6 @@ var
 implementation
 
 {$R *.lfm}
-
-
-procedure TFrmSamples.FormCreate(Sender: TObject);
-begin
-
-end;
 
 procedure TFrmSamples.lbAttachmentKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
@@ -102,7 +95,7 @@ var
   I: Integer;
 begin
   LMail := TMail.New
-    .AddFrom(edtFrom.Text, edtNameFrom.Text)
+    .From(edtFrom.Text, edtNameFrom.Text)
     .SSL(cbCriptocrafia.ItemIndex = 0)
     .Host(edtHost.Text)
     .Port(StrToInt(edtPort.Text))
@@ -113,7 +106,7 @@ begin
     .AddCC(edtCc.Text, edtNameCc.Text)
     .AddBCC(edtCco.Text, edtNameCco.Text)
     .AddTo(edtTo.Text, edtNameTo.Text)
-    .AddSubject(edtSubject.Text)
+    .Subject(edtSubject.Text)
     .AddBody(mmMessage.Text);
   if lbAttachment.Items.Count > 0 then
     for I := 0 to Pred(lbAttachment.Items.Count) do
