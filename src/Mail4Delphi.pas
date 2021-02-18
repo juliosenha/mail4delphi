@@ -315,7 +315,8 @@ end;
 
 function TMail.Disconnect: Boolean;
 begin
-  FIdSMTP.Disconnect;
+  if FIdSMTP.Connected then
+    FIdSMTP.Disconnect;
   UnLoadOpenSSLLibrary;
   Result := True;
 end;
@@ -326,11 +327,13 @@ begin
 end;
 
 function TMail.SendMail: Boolean;
+var
+  LImplicitConnection: Boolean;
 begin
   if not SetUpEmail then
     raise Exception.Create('Incomplete data!');
   if not FIdSMTP.Connected then
-    Self.Connect;
+    LImplicitConnection := Self.Connect;
   try
     try
       FIdSMTP.Send(FIdMessage);
@@ -340,7 +343,7 @@ begin
         raise Exception.Create('Error sending message: ' + E.Message);
     end;
   finally
-    if FIdSMTP.Connected then
+    if LImplicitConnection then
       Self.Disconnect;
   end;
 end;
