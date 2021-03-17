@@ -332,6 +332,7 @@ var
 begin
   if not SetUpEmail then
     raise Exception.Create('Incomplete data!');
+  LImplicitConnection := False;  
   if not FIdSMTP.Connected then
     LImplicitConnection := Self.Connect;
   try
