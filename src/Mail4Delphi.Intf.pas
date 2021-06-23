@@ -4,7 +4,7 @@ interface
 
 uses
 {$IF DEFINED(FPC)}
-    Classes;
+  Classes;
 {$ELSE}
   System.Classes;
 {$ENDIF}
@@ -31,6 +31,8 @@ type
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
     function ContentType(const AValue: string): IMail;
+    function ConnectTimeout(const ATimeout: Integer): IMail;
+    function ReadTimeout(const ATimeout: Integer): IMail;
     function Clear: IMail;
     function SendMail: Boolean;
     function SetUpEmail: Boolean;

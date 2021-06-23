@@ -8,9 +8,9 @@ interface
 
 uses
 {$IF DEFINED(FPC)}
-    Classes, SysUtils, Variants,
+  Classes, SysUtils, Variants,
 {$ELSE}
-    System.Classes, System.SysUtils, System.Variants,
+  System.Classes, System.SysUtils, System.Variants,
 {$ENDIF}
   IdSMTP, IdSSLOpenSSL, IdMessage, IdMessageParts, IdText, IdAttachmentFile, IdExplicitTLSClientServerBase, Mail4Delphi.Intf;
 
@@ -19,8 +19,8 @@ type
 
   TMail = class(TInterfacedObject, IMail)
   private const
-    CONNECT_TIMEOUT = 10000;
-    READ_TIMEOUT = 10000;
+    CONNECT_TIMEOUT = 60000;
+    READ_TIMEOUT = 60000;
   private
     FIdSSLIOHandlerSocket: TIdSSLIOHandlerSocketOpenSSL;
     FIdSMTP: TIdSMTP;
@@ -48,6 +48,8 @@ type
     function Auth(const AValue: Boolean): IMail;
     function SSL(const AValue: Boolean): IMail;
     function ContentType(const AValue: string): IMail;
+    function ConnectTimeout(const ATimeout: Integer): IMail;
+    function ReadTimeout(const ATimeout: Integer): IMail;
     function Clear: IMail;
     function SendMail: Boolean;
     function SetUpEmail: Boolean;
@@ -162,6 +164,13 @@ begin
   Result := Self;
 end;
 
+function TMail.ReadTimeout(const ATimeout: Integer): IMail;
+begin
+  if (ATimeout > 0) then
+    FIdSMTP.ReadTimeout := ATimeout;
+  Result := Self;
+end;
+
 function TMail.ReceiptRecipient(const AValue: Boolean): IMail;
 begin
   FReceiptRecipient := AValue;
@@ -249,7 +258,7 @@ function TMail.Connect: Boolean;
 begin
   FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
   FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
-  FIdSMTP.IOHandler := IdSSLIOHandlerSocket;
+  FIdSMTP.IOHandler := FIdSSLIOHandlerSocket;
   FIdSMTP.UseTLS := utUseExplicitTLS;
   if FSSL then
   begin
@@ -277,6 +286,13 @@ begin
       raise Exception.Create('Authentication error:' + E.Message);
     end;
   end;
+end;
+
+function TMail.ConnectTimeout(const ATimeout: Integer): IMail;
+begin
+  if (ATimeout > 0) then
+    FIdSMTP.ConnectTimeout := ATimeout;
+  Result := Self;
 end;
 
 function TMail.ContentType(const AValue: string): IMail;
