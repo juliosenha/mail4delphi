@@ -256,7 +256,7 @@ end;
 
 function TMail.Connect: Boolean;
 begin
-  FIdSSLIOHandlerSocket.SSLOptions.Method := sslvTLSv1_2;
+  FIdSSLIOHandlerSocket.SSLOptions.Method := sslvSSLv23;
   FIdSSLIOHandlerSocket.SSLOptions.Mode := sslmUnassigned;
   FIdSMTP.IOHandler := FIdSSLIOHandlerSocket;
   FIdSMTP.UseTLS := utUseExplicitTLS;
