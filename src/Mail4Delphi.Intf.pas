@@ -19,6 +19,7 @@ type
     function AddReplyTo(const AMail: string; const AName: string = ''): IMail;
     function AddCC(const AMail: string; const AName: string = ''): IMail;
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
+    function MessageId(const AMessageId: string): IMail;
     function AddBody(const ABody: string): IMail;
     function ClearBody: IMail;
     function ClearAttachments: IMail;
