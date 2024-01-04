@@ -37,6 +37,7 @@ type
     function AddCC(const AMail: string; const AName: string = ''): IMail;
     function AddBCC(const AMail: string; const AName: string = ''): IMail;
     function AddBody(const ABody: string): IMail;
+    function MessageId(const AMessageId: string): IMail;
     function ClearBody: IMail;
     function ClearAttachments: IMail;
     function Host(const AHost: string): IMail;
@@ -134,6 +135,12 @@ begin
   if AHost.Trim.IsEmpty then
     raise Exception.Create('Server not informed!');
   FIdSMTP.Host := AHost;
+  Result := Self;
+end;
+
+function TMail.MessageId(const AMessageId: string): IMail;
+begin
+  FIdMessage.MsgId := AMessageId;
   Result := Self;
 end;
 
@@ -348,7 +355,7 @@ var
 begin
   if not SetUpEmail then
     raise Exception.Create('Incomplete data!');
-  LImplicitConnection := False;  
+  LImplicitConnection := False;
   if not FIdSMTP.Connected then
     LImplicitConnection := Self.Connect;
   try
