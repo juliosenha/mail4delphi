@@ -362,7 +362,8 @@ begin
     LImplicitConnection := Self.Connect;
   try
     try
-      FIdMessage.MsgId := FMessageId;
+      if not FMessageId.Trim.IsEmpty then      
+        FIdMessage.MsgId := FMessageId;
       FIdSMTP.Send(FIdMessage);
       Result := True;
     except
