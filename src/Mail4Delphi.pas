@@ -29,6 +29,7 @@ type
     FSSL: Boolean;
     FAuth: Boolean;
     FReceiptRecipient: Boolean;
+    FMessageId: string;
     function AddTo(const AMail: string; const AName: string = ''): IMail;
     function From(const AMail: string; const AName: string = ''): IMail;
     function ReceiptRecipient(const AValue: Boolean): IMail;
@@ -140,7 +141,7 @@ end;
 
 function TMail.MessageId(const AMessageId: string): IMail;
 begin
-  FIdMessage.MsgId := AMessageId;
+  FMessageId := AMessageId;
   Result := Self;
 end;
 
@@ -327,6 +328,7 @@ begin
   FSSL := False;
   FAuth := False;
   FReceiptRecipient := False;
+  FMessageId := EmptyStr;
 end;
 
 destructor TMail.Destroy;
@@ -360,6 +362,8 @@ begin
     LImplicitConnection := Self.Connect;
   try
     try
+      if not FMessageId.Trim.IsEmpty then      
+        FIdMessage.MsgId := FMessageId;
       FIdSMTP.Send(FIdMessage);
       Result := True;
     except
